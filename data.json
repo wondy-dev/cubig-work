@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "collectedAt": "2026-03-19T06:23:02.420Z",
+    "collectedAt": "2026-03-19T06:41:32.009Z",
     "period": 7,
     "thisWeek": {
       "start": "2026-03-12",
@@ -26,8 +26,8 @@
             728,
             656,
             636,
-            1795,
-            18208,
+            1796,
+            18479,
             0.625
           ]
         },
@@ -113,7 +113,7 @@
           "mets": [
             77,
             71,
-            196
+            197
           ]
         }
       ],
@@ -185,7 +185,7 @@
           "mets": [
             21,
             17,
-            31
+            32
           ]
         }
       ],
@@ -196,9 +196,9 @@
             "Tabular Data Definition, Examples, Formats, and How to Tabulate Effectively - CUBIG Blogs"
           ],
           "mets": [
-            58,
+            59,
             28,
-            572.2614275675676
+            590.6766038108109
           ]
         },
         {
@@ -756,7 +756,7 @@
           "mets": [
             33,
             33,
-            55
+            56
           ]
         },
         {
@@ -855,7 +855,7 @@
             "date_range_0"
           ],
           "mets": [
-            1795,
+            1796,
             649
           ]
         },
@@ -1523,6 +1523,294 @@
           ]
         }
       ]
+    },
+    "syn": {
+      "traffic": [
+        {
+          "dims": [
+            "date_range_1"
+          ],
+          "mets": [
+            55,
+            37,
+            33,
+            174,
+            4681,
+            0.4909090909090909
+          ]
+        },
+        {
+          "dims": [
+            "date_range_0"
+          ],
+          "mets": [
+            50,
+            36,
+            30,
+            126,
+            2197,
+            0.5
+          ]
+        }
+      ],
+      "daily": [
+        {
+          "dims": [
+            "20260312"
+          ],
+          "mets": [
+            11,
+            9,
+            52
+          ]
+        },
+        {
+          "dims": [
+            "20260313"
+          ],
+          "mets": [
+            2,
+            2,
+            5
+          ]
+        },
+        {
+          "dims": [
+            "20260314"
+          ],
+          "mets": [
+            2,
+            1,
+            2
+          ]
+        },
+        {
+          "dims": [
+            "20260315"
+          ],
+          "mets": [
+            6,
+            4,
+            14
+          ]
+        },
+        {
+          "dims": [
+            "20260316"
+          ],
+          "mets": [
+            14,
+            14,
+            28
+          ]
+        },
+        {
+          "dims": [
+            "20260317"
+          ],
+          "mets": [
+            11,
+            11,
+            19
+          ]
+        },
+        {
+          "dims": [
+            "20260318"
+          ],
+          "mets": [
+            4,
+            4,
+            6
+          ]
+        }
+      ],
+      "countries": [
+        {
+          "dims": [
+            "South Korea"
+          ],
+          "mets": [
+            20,
+            29
+          ]
+        },
+        {
+          "dims": [
+            "United States"
+          ],
+          "mets": [
+            5,
+            5
+          ]
+        },
+        {
+          "dims": [
+            "China"
+          ],
+          "mets": [
+            3,
+            3
+          ]
+        },
+        {
+          "dims": [
+            "Japan"
+          ],
+          "mets": [
+            3,
+            3
+          ]
+        },
+        {
+          "dims": [
+            "United Kingdom"
+          ],
+          "mets": [
+            2,
+            3
+          ]
+        },
+        {
+          "dims": [
+            "Canada"
+          ],
+          "mets": [
+            1,
+            1
+          ]
+        },
+        {
+          "dims": [
+            "Germany"
+          ],
+          "mets": [
+            1,
+            1
+          ]
+        },
+        {
+          "dims": [
+            "Italy"
+          ],
+          "mets": [
+            1,
+            5
+          ]
+        }
+      ],
+      "channels": [
+        {
+          "dims": [
+            "Referral",
+            "date_range_1"
+          ],
+          "mets": [
+            37,
+            29,
+            99
+          ]
+        },
+        {
+          "dims": [
+            "Referral",
+            "date_range_0"
+          ],
+          "mets": [
+            34,
+            23,
+            96
+          ]
+        },
+        {
+          "dims": [
+            "Direct",
+            "date_range_1"
+          ],
+          "mets": [
+            12,
+            6,
+            66
+          ]
+        },
+        {
+          "dims": [
+            "Direct",
+            "date_range_0"
+          ],
+          "mets": [
+            8,
+            8,
+            18
+          ]
+        },
+        {
+          "dims": [
+            "Organic Search",
+            "date_range_0"
+          ],
+          "mets": [
+            7,
+            5,
+            9
+          ]
+        },
+        {
+          "dims": [
+            "Organic Search",
+            "date_range_1"
+          ],
+          "mets": [
+            5,
+            2,
+            7
+          ]
+        },
+        {
+          "dims": [
+            "Unassigned",
+            "date_range_0"
+          ],
+          "mets": [
+            2,
+            2,
+            3
+          ]
+        },
+        {
+          "dims": [
+            "Organic Social",
+            "date_range_1"
+          ],
+          "mets": [
+            1,
+            1,
+            2
+          ]
+        },
+        {
+          "dims": [
+            "Organic Social",
+            "date_range_0"
+          ],
+          "mets": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "dims": [
+            "Unassigned",
+            "date_range_1"
+          ],
+          "mets": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
     }
   },
   "gsc": {
@@ -1979,6 +2267,33 @@
           "impressions": 3,
           "ctr": 0,
           "position": 1
+        }
+      ]
+    },
+    "syn": {
+      "overview": {
+        "keys": [],
+        "clicks": 3,
+        "impressions": 10,
+        "ctr": 0.3,
+        "position": 4.1
+      },
+      "overviewPrev": {
+        "keys": [],
+        "clicks": 4,
+        "impressions": 12,
+        "ctr": 0.3333333333333333,
+        "position": 2.083333333333333
+      },
+      "queries": [
+        {
+          "keys": [
+            "syntitan"
+          ],
+          "clicks": 3,
+          "impressions": 6,
+          "ctr": 0.5,
+          "position": 4.5
         }
       ]
     }
