@@ -115,10 +115,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="tab-content" id="tab-seo"><div class="insight-box" style="opacity:.7"><h3>SEO / Search tab &mdash; coming soon</h3></div></div>
 </div>
 <script>
-var DATA=null,chartInstances={},selectedRange=null;
-async function loadData(){try{var r=await fetch('data.json');DATA=await r.json();renderOverview();}catch(e){document.getElementById('insightBox').innerHTML='<h3>data.json loading failed</h3>';}}
+var DATA=null,chartInstances={},selectedRange=null,_dateInRange=null,_dateInPrevRange=null;
+async function loadData(){try{var r=await fetch('data.json');DATA=await r.json();renderOverview();}catch(e){console.error('Dashboard error:',e);document.getElementById('insightBox').innerHTML='<h3>data.json loading failed: '+e.message+'</h3>';}}
 document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(function(x){x.classList.remove('active');});t.classList.add('active');document.getElementById('tab-'+t.dataset.tab).classList.add('active');});});
-flatpickr('#dateRange',{mode:'range',dateFormat:'Y-m-d',defaultDate:[new Date(new Date().setDate(new Date().getDate()-7)),new Date(new Date().setDate(new Date().getDate()-1))],locale:{rangeSeparator:'  ~  '},onChange:function(dates){if(dates.length===2&&DATA){selectedRange=dates;renderOverview();}}});
+var _defaultStart=new Date(new Date().setDate(new Date().getDate()-7)),_defaultEnd=new Date(new Date().setDate(new Date().getDate()-1));
+selectedRange=[_defaultStart,_defaultEnd];
+flatpickr('#dateRange',{mode:'range',dateFormat:'Y-m-d',defaultDate:[_defaultStart,_defaultEnd],locale:{rangeSeparator:'  ~  '},onChange:function(dates){if(dates.length===2&&DATA){selectedRange=dates;renderOverview();}}});
 
 function fmt(n){if(n==null)return'-';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e4)return(n/1e4).toFixed(1)+'\uB9CC';if(n>=1e3)return n.toLocaleString();if(typeof n==='number'&&!Number.isInteger(n))return n.toFixed(1);return String(n);}
 function fmtWon(n){if(n==null)return'-';return Math.round(n).toLocaleString('ko-KR')+'\uC6D0';}
@@ -136,17 +138,16 @@ function destroyChart(id){if(chartInstances[id]){chartInstances[id].destroy();de
 function renderOverview(){
   var d=DATA,cubig=d.ga4.cubig,llm=d.ga4.llm,syn=d.ga4.syn,gsc=d.gsc.cubig,meta=d.meta,naver=d.naver;
   document.getElementById('lastUpdated').textContent='\uB9C8\uC9C0\uB9C9 \uC218\uC9D1: '+new Date(d.metadata.collectedAt).toLocaleString('ko-KR');
-  if(!selectedRange){var fp=document.getElementById('dateRange')._flatpickr;if(fp)fp.setDate([d.metadata.thisWeek.start,d.metadata.thisWeek.end]);}
 
   // 선택된 날짜 범위로 일별 데이터 필터링
   function dateInRange(dateStr){
-    if(!selectedRange)return true;
     var ds=dateStr.length===8?dateStr.slice(0,4)+'-'+dateStr.slice(4,6)+'-'+dateStr.slice(6,8):dateStr;
     var t=new Date(ds).getTime();
     var s0=new Date(selectedRange[0].toISOString().split('T')[0]).getTime();
     var s1=new Date(selectedRange[1].toISOString().split('T')[0]).getTime();
     return t>=s0&&t<=s1;
   }
+  _dateInRange=dateInRange;
   var filteredCubigDaily=cubig.daily.filter(function(r){return dateInRange(r.dims[0]);});
   var filteredLlmDaily=llm.daily.filter(function(r){return dateInRange(r.dims[0]);});
   var filteredSynDaily=(syn.daily||[]).filter(function(r){return dateInRange(r.dims[0]);});
@@ -158,88 +159,91 @@ function renderOverview(){
   var filteredNaverDaily=(naver.statsDaily||[]).filter(function(r){return dateInRange(r.date);});
 
   // 날짜 범위 표시
-  var periodStart=selectedRange?selectedRange[0].toISOString().split('T')[0]:d.metadata.thisWeek.start;
-  var periodEnd=selectedRange?selectedRange[1].toISOString().split('T')[0]:d.metadata.thisWeek.end;
+  var periodStart=selectedRange[0].toISOString().split('T')[0];
+  var periodEnd=selectedRange[1].toISOString().split('T')[0];
   document.getElementById('insightPeriod').textContent=periodStart+' ~ '+periodEnd;
 
-  // 날짜 필터링 시 일별 데이터에서 합산
-  var isFiltered=!!selectedRange;
-  var totalSes,prevSes,totalUsers,prevUsers;
-  if(isFiltered){
-    totalSes=filteredCubigDaily.reduce(function(s,r){return s+r.mets[0];},0)+filteredLlmDaily.reduce(function(s,r){return s+r.mets[0];},0)+filteredSynDaily.reduce(function(s,r){return s+r.mets[0];},0);
-    totalUsers=filteredCubigDaily.reduce(function(s,r){return s+r.mets[1];},0)+filteredLlmDaily.reduce(function(s,r){return s+r.mets[1];},0)+filteredSynDaily.reduce(function(s,r){return s+r.mets[1];},0);
-    // 비교 기간: 원본 전체 데이터 사용
-    var cP=cubig.traffic[1].mets,lP=llm.traffic[1].mets,sP=syn.traffic[1].mets;
-    prevSes=cP[0]+lP[0]+sP[0];prevUsers=cP[1]+lP[1]+sP[1];
-  }else{
-    var cT=cubig.traffic[0].mets,cP=cubig.traffic[1].mets;
-    var lT=llm.traffic[0].mets,lP=llm.traffic[1].mets;
-    var sT=syn.traffic[0].mets,sP=syn.traffic[1].mets;
-    totalUsers=cT[1]+lT[1]+sT[1];prevUsers=cP[1]+lP[1]+sP[1];
-    totalSes=cT[0]+lT[0]+sT[0];prevSes=cP[0]+lP[0]+sP[0];
+  // 비교 기간: 선택 기간과 동일한 길이의 직전 기간
+  var rangeDays=Math.round((selectedRange[1]-selectedRange[0])/(1000*60*60*24))+1;
+  var prevEnd=new Date(selectedRange[0]);prevEnd.setDate(prevEnd.getDate()-1);
+  var prevStart=new Date(prevEnd);prevStart.setDate(prevStart.getDate()-rangeDays+1);
+  function dateInPrevRange(dateStr){
+    var ds=dateStr.length===8?dateStr.slice(0,4)+'-'+dateStr.slice(4,6)+'-'+dateStr.slice(6,8):dateStr;
+    var t=new Date(ds).getTime();
+    var s0=new Date(prevStart.toISOString().split('T')[0]).getTime();
+    var s1=new Date(prevEnd.toISOString().split('T')[0]).getTime();
+    return t>=s0&&t<=s1;
   }
-  var cT0=cubig.traffic[0].mets,cP0=cubig.traffic[1].mets;
-  var sT0=syn.traffic[0].mets,sP0=syn.traffic[1].mets;
+  _dateInPrevRange=dateInPrevRange;
+  var prevCubigDaily=cubig.daily.filter(function(r){return dateInPrevRange(r.dims[0]);});
+  var prevLlmDaily=llm.daily.filter(function(r){return dateInPrevRange(r.dims[0]);});
+  var prevSynDaily=(syn.daily||[]).filter(function(r){return dateInPrevRange(r.dims[0]);});
+  var prevEngDaily=(cubig.dailyEngagement||[]).filter(function(r){return dateInPrevRange(r.dims[0]);});
+  var prevMetaDaily=meta.daily.filter(function(r){return dateInPrevRange(r.date);});
+  var prevNaverDaily=(naver.statsDaily||[]).filter(function(r){return dateInPrevRange(r.date);});
+  var prevMetaCampDaily=(meta.campaignDaily||[]).filter(function(r){return dateInPrevRange(r.date);});
 
-  // META spend (filtered)
-  var metaSpend=filteredMetaDaily.reduce(function(s,r){return s+r.spend;},0);
-  var metaSpendPrev=meta.insightsPrev.reduce(function(s,c){return s+(c.spend||0);},0);
-  var metaLeads=meta.insights.reduce(function(s,c){return s+(c.conversions||0);},0);
-  var metaCPL=metaLeads>0?meta.insights.reduce(function(s,c){return s+(c.spend||0);},0)/metaLeads:0;
+  // KPI: 선택 기간 합산
+  var totalSes=filteredCubigDaily.reduce(function(s,r){return s+r.mets[0];},0)+filteredLlmDaily.reduce(function(s,r){return s+r.mets[0];},0)+filteredSynDaily.reduce(function(s,r){return s+r.mets[0];},0);
+  var totalUsers=filteredCubigDaily.reduce(function(s,r){return s+r.mets[1];},0)+filteredLlmDaily.reduce(function(s,r){return s+r.mets[1];},0)+filteredSynDaily.reduce(function(s,r){return s+r.mets[1];},0);
+  var prevSes=prevCubigDaily.reduce(function(s,r){return s+r.mets[0];},0)+prevLlmDaily.reduce(function(s,r){return s+r.mets[0];},0)+prevSynDaily.reduce(function(s,r){return s+r.mets[0];},0);
+  var prevUsers=prevCubigDaily.reduce(function(s,r){return s+r.mets[1];},0)+prevLlmDaily.reduce(function(s,r){return s+r.mets[1];},0)+prevSynDaily.reduce(function(s,r){return s+r.mets[1];},0);
 
-  // Naver spend (날짜 필터 반영)
-  var naverSpend,naverSpendPrev;
-  if(isFiltered&&filteredNaverDaily.length>0){
-    naverSpend=filteredNaverDaily.reduce(function(s,c){return s+(c.salesAmt||0);},0);
-  }else{
-    naverSpend=naver.stats.reduce(function(s,c){return s+(c.salesAmt||0);},0);
-  }
-  naverSpendPrev=(naver.statsPrev||[]).reduce(function(s,c){return s+(c.salesAmt||0);},0);
+  // 안전한 traffic 접근 (insights용)
+  var ZERO_METS=[0,0,0,0,0,0];
+  function safeMets(arr,idx){return(arr[idx]&&arr[idx].mets)||ZERO_METS;}
+  var cT0=safeMets(cubig.traffic,0),cP0=safeMets(cubig.traffic,1);
+  var sT0=safeMets(syn.traffic,0),sP0=safeMets(syn.traffic,1);
+
+  // META spend (campaignDaily 기준 — daily보다 정확)
+  var metaSpend=filteredMetaCampDaily.reduce(function(s,r){return s+r.spend;},0);
+  var metaSpendPrev=prevMetaCampDaily.reduce(function(s,r){return s+r.spend;},0);
+  var metaLeads=filteredMetaCampDaily.reduce(function(s,r){return s+(r.conversions||0);},0);
+  var metaCPL=metaLeads>0?metaSpend/metaLeads:0;
+
+  // Naver spend (선택 기간 vs 직전 기간)
+  var naverSpend=filteredNaverDaily.reduce(function(s,c){return s+(c.salesAmt||0);},0);
+  var naverSpendPrev=prevNaverDaily.reduce(function(s,c){return s+(c.salesAmt||0);},0);
   var totalAdSpend=metaSpend+naverSpend;
   var totalAdSpendPrev=metaSpendPrev+naverSpendPrev;
 
   // SynTitan ← cubig.ai 유입 세션
-  var synClicks=cubig.syntitanClicks||[];var synClickThis=0,synClickPrev=0;
-  if(isFiltered){
-    synClickThis=filteredSynFromCubig.reduce(function(s,r){return s+r.mets[0];},0);
-    // 비교 기간은 원본 전주 데이터 사용
-    synClicks.forEach(function(r){if(r.dims&&r.dims[0]==='date_range_1')synClickPrev=r.mets[0];});
-  }else{
-    synClicks.forEach(function(r){if(!r.dims||r.dims.length===0){synClickThis=r.mets[0];}else if(r.dims[0]==='date_range_0')synClickThis=r.mets[0];if(r.dims&&r.dims[0]==='date_range_1')synClickPrev=r.mets[0];});
-  }
+  var synClickThis=filteredSynFromCubig.reduce(function(s,r){return s+r.mets[0];},0);
+  var prevSynFromCubig=(cubig.synFromCubigDaily||[]).filter(function(r){return dateInPrevRange(r.dims[0]);});
+  var synClickPrev=prevSynFromCubig.reduce(function(s,r){return s+r.mets[0];},0);
 
-  // Avg engagement (from daily when filtered)
-  var avgEngThis,avgEngPrev;
-  if(isFiltered&&filteredEngDaily.length>0){
-    var totalEngSes=filteredEngDaily.reduce(function(s,r){return s+r.mets[0];},0);
-    var totalEngDur=filteredEngDaily.reduce(function(s,r){return s+r.mets[1];},0);
-    avgEngThis=totalEngSes>0?totalEngDur/totalEngSes:0;
-  }else{avgEngThis=cT0[0]>0?cT0[4]/cT0[0]:0;}
-  avgEngPrev=cP0[0]>0?cP0[4]/cP0[0]:0;
+  // Avg engagement (선택 기간 vs 직전 기간 — 일별 데이터에서 계산)
+  var totalEngSes=filteredEngDaily.reduce(function(s,r){return s+r.mets[0];},0);
+  var totalEngDur=filteredEngDaily.reduce(function(s,r){return s+r.mets[1];},0);
+  var avgEngThis=totalEngSes>0?totalEngDur/totalEngSes:0;
+  var prevEngSes=prevEngDaily.reduce(function(s,r){return s+r.mets[0];},0);
+  var prevEngDur=prevEngDaily.reduce(function(s,r){return s+r.mets[1];},0);
+  var avgEngPrev=prevEngSes>0?prevEngDur/prevEngSes:0;
 
-  // Channels (cubig)
+  // Channels (cubig — 일별 데이터에서 날짜 필터 적용)
   var chThis={},chPrev={};
-  cubig.channels.filter(function(c){return c.dims[1]==='date_range_0';}).forEach(function(c){chThis[c.dims[0]]=(chThis[c.dims[0]]||0)+c.mets[0];});
-  cubig.channels.filter(function(c){return c.dims[1]==='date_range_1';}).forEach(function(c){chPrev[c.dims[0]]=(chPrev[c.dims[0]]||0)+c.mets[0];});
+  (cubig.dailyChannels||[]).filter(function(c){return dateInRange(c.dims[0]);}).forEach(function(c){chThis[c.dims[1]]=(chThis[c.dims[1]]||0)+c.mets[0];});
+  (cubig.dailyChannels||[]).filter(function(c){return dateInPrevRange(c.dims[0]);}).forEach(function(c){chPrev[c.dims[1]]=(chPrev[c.dims[1]]||0)+c.mets[0];});
 
-  // ---- Insights ----
+  // ---- Insights (모두 일별 데이터 기반) ----
+  var synSesThis=filteredSynDaily.reduce(function(s,r){return s+r.mets[0];},0);
+  var synUsersThis=filteredSynDaily.reduce(function(s,r){return s+r.mets[1];},0);
+  var synSesPrev=prevSynDaily.reduce(function(s,r){return s+r.mets[0];},0);
   var ins=[],sesC=pctChange(totalSes,prevSes);
-  ins.push('\uC804\uCCB4 \uD2B8\uB798\uD53D <span class="highlight">'+fmt(totalSes)+'\uC138\uC158</span> (Cubig+LLMCapsule+SynTitan) \u2014 \uC804\uC8FC \uB300\uBE44 <span class="'+sesC.cls+'">'+sesC.val+'</span>');
-  ins.push('SynTitan.ai <span class="highlight">'+sT0[0]+'\uC138\uC158</span> / '+sT0[1]+'\uC0AC\uC6A9\uC790 \u2014 \uC804\uC8FC \uB300\uBE44 <span class="'+pctChange(sT0[0],sP0[0]).cls+'">'+pctChange(sT0[0],sP0[0]).val+'</span>');
+  ins.push('\uC804\uCCB4 \uD2B8\uB798\uD53D <span class="highlight">'+fmt(totalSes)+'\uC138\uC158</span> (Cubig+LLMCapsule+SynTitan) \u2014 \uC774\uC804 \uAE30\uAC04 \uB300\uBE44 <span class="'+sesC.cls+'">'+sesC.val+'</span>');
+  ins.push('SynTitan.ai <span class="highlight">'+synSesThis+'\uC138\uC158</span> / '+synUsersThis+'\uC0AC\uC6A9\uC790 \u2014 \uC774\uC804 \uAE30\uAC04 \uB300\uBE44 <span class="'+pctChange(synSesThis,synSesPrev).cls+'">'+pctChange(synSesThis,synSesPrev).val+'</span>');
   var topCh=Object.entries(chThis).sort(function(a,b){return b[1]-a[1];})[0];
   if(topCh){var tc=pctChange(topCh[1],chPrev[topCh[0]]||0);ins.push('\uCD5C\uB300 \uC720\uC785: <span class="highlight">'+topCh[0]+'</span> ('+topCh[1]+'\uC138\uC158, <span class="'+tc.cls+'">'+tc.val+'</span>)');}
-  var filteredMetaLeads=isFiltered&&filteredMetaCampDaily.length>0?filteredMetaCampDaily.reduce(function(s,r){return s+(r.conversions||0);},0):metaLeads;
-  var filteredMetaSpendTotal=isFiltered?metaSpend:meta.insights.reduce(function(s,c){return s+(c.spend||0);},0);
-  var filteredMetaCPL=filteredMetaLeads>0?filteredMetaSpendTotal/filteredMetaLeads:0;
-  if(filteredMetaLeads>0)ins.push('META \uB9AC\uB4DC <span class="highlight">'+filteredMetaLeads+'\uAC74</span> (CPL '+fmtWon(Math.round(filteredMetaCPL))+')');
-  if(naverSpend>0){var naverClks=isFiltered&&filteredNaverDaily.length>0?filteredNaverDaily.reduce(function(s,c){return s+(c.clkCnt||0);},0):naver.stats.reduce(function(s,c){return s+(c.clkCnt||0);},0);ins.push('Naver Ads <span class="highlight">'+fmtWon(naverSpend)+'</span> \uC9C0\uCD9C / '+naverClks+'\uD074\uB9AD');}
+  if(metaLeads>0)ins.push('META \uB9AC\uB4DC <span class="highlight">'+metaLeads+'\uAC74</span> (CPL '+fmtWon(Math.round(metaCPL))+')');
+  var naverClks=filteredNaverDaily.reduce(function(s,c){return s+(c.clkCnt||0);},0);
+  if(naverSpend>0)ins.push('Naver Ads <span class="highlight">'+fmtWon(naverSpend)+'</span> \uC9C0\uCD9C / '+naverClks+'\uD074\uB9AD');
   document.getElementById('insightList').innerHTML=ins.map(function(i){return'<li>'+i+'</li>';}).join('');
 
   // ---- KPI Cards (1: Try SynTitan sub text removed) ----
   var kpis=[
     {label:'\uCD1D \uC0AC\uC6A9\uC790',sub:'Cubig + LLMCapsule + SynTitan',value:fmt(totalUsers),change:pctChange(totalUsers,prevUsers),spark:filteredCubigDaily.map(function(d){return d.mets[1];}),color:COLORS.blue},
     {label:'\uD3C9\uADE0 \uCC38\uC5EC \uCCB4\uB958',sub:'cubig.ai \uC2E4\uC81C \uD65C\uC131 \uC2DC\uAC04',value:fmtDur(avgEngThis),change:pctChange(avgEngThis,avgEngPrev),spark:filteredCubigDaily.map(function(d){return d.mets[0];}),color:COLORS.green},
-    {label:'\uCD1D \uAD11\uACE0\uBE44',sub:'\uC804\uCCB4 \uB9E4\uCCB4 \uD569\uC0B0',value:fmtWon(totalAdSpend),change:pctChange(totalAdSpend,totalAdSpendPrev),spark:filteredMetaDaily.map(function(d){return d.spend;}),color:COLORS.orange},
+    {label:'\uCD1D \uAD11\uACE0\uBE44',sub:'\uC804\uCCB4 \uB9E4\uCCB4 \uD569\uC0B0',value:fmtWon(totalAdSpend),change:pctChange(totalAdSpend,totalAdSpendPrev),spark:(function(){var dm={};filteredMetaCampDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+r.spend;});filteredNaverDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+(r.salesAmt||0);});return Object.keys(dm).sort().map(function(k){return dm[k];});})(),color:COLORS.orange},
     {label:'Try SynTitan',sub:'',value:synClickThis+'\uD68C',change:pctChange(synClickThis,synClickPrev),spark:[],color:COLORS.purple}
   ];
   var kpiGrid=document.getElementById('kpiGrid');kpiGrid.innerHTML='';
@@ -267,49 +271,37 @@ function renderOverview(){
   destroyChart('channelCompare');
   chartInstances['channelCompare']=new Chart(document.getElementById('channelCompare'),{type:'bar',data:{labels:allCh,datasets:[{label:'\uC120\uD0DD \uAE30\uAC04',data:allCh.map(function(n){return chThis[n]||0;}),backgroundColor:COLORS.blue,borderRadius:4},{label:'\uAC19\uC740 \uAE30\uAC04 \uC774\uC804',data:allCh.map(function(n){return chPrev[n]||0;}),backgroundColor:'#d1d5db',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#f3f4f6'}}}}});
 
-  // ---- AD Table (날짜 필터 반영) ----
+  // ---- AD Table (항상 일별 데이터에서 집계) ----
   var adRows=[];
-  if(isFiltered&&filteredMetaCampDaily.length>0){
-    // 날짜 필터: 일별 캠페인 데이터에서 재집계
-    var metaCampAgg={};
-    filteredMetaCampDaily.forEach(function(r){
-      if(!metaCampAgg[r.campaignName])metaCampAgg[r.campaignName]={spend:0,imp:0,clicks:0,conv:0,name:r.campaignName};
-      metaCampAgg[r.campaignName].spend+=r.spend;metaCampAgg[r.campaignName].imp+=r.impressions;
-      metaCampAgg[r.campaignName].clicks+=r.clicks;metaCampAgg[r.campaignName].conv+=r.conversions||0;
-    });
-    Object.keys(metaCampAgg).forEach(function(k){var c=metaCampAgg[k];var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.imp>0?(c.clicks/c.imp*100):0;adRows.push({platform:'META',cls:'meta',name:c.name,status:'active',spend:c.spend,imp:c.imp,clicks:c.clicks,leads:c.conv,cpc:cpc,ctr:ctr});});
-  }else{
-    meta.insights.forEach(function(c){var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.impressions>0?(c.clicks/c.impressions*100):0;adRows.push({platform:'META',cls:'meta',name:c.campaignName,status:'active',spend:c.spend,imp:c.impressions,clicks:c.clicks,leads:c.conversions||0,cpc:cpc,ctr:ctr});});
-  }
-  // Naver
-  if(isFiltered&&filteredNaverDaily.length>0){
-    var naverCampAgg={};
-    filteredNaverDaily.forEach(function(r){
-      if(!naverCampAgg[r.campaignName])naverCampAgg[r.campaignName]={spend:0,imp:0,clicks:0,name:r.campaignName};
-      naverCampAgg[r.campaignName].spend+=(r.salesAmt||0);naverCampAgg[r.campaignName].imp+=(r.impCnt||0);
-      naverCampAgg[r.campaignName].clicks+=(r.clkCnt||0);
-    });
-    Object.keys(naverCampAgg).forEach(function(k){var c=naverCampAgg[k];var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.imp>0?(c.clicks/c.imp*100):0;adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:'active',spend:c.spend,imp:c.imp,clicks:c.clicks,leads:0,cpc:cpc,ctr:ctr});});
-  }else{
-    var naverStatsMap={};naver.stats.forEach(function(s){naverStatsMap[s.campaignId]=s;});
-    naver.campaigns.forEach(function(c){
-      var ia=c.status==='ELIGIBLE'||c.status==='ACTIVE';
-      var st=naverStatsMap[c.id];
-      if(st){var cpc=st.clkCnt>0?st.salesAmt/st.clkCnt:0;var ctr=st.impCnt>0?(st.clkCnt/st.impCnt*100):0;adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:'active',spend:st.salesAmt,imp:st.impCnt,clicks:st.clkCnt,leads:0,cpc:cpc,ctr:ctr});
-      }else{adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:ia?'active':'paused',spend:null,imp:null,clicks:null,leads:null,cpc:null,ctr:null});}
-    });
-  }
+  // META: 일별 캠페인 데이터에서 재집계
+  var metaCampAgg={};
+  filteredMetaCampDaily.forEach(function(r){
+    if(!metaCampAgg[r.campaignName])metaCampAgg[r.campaignName]={spend:0,imp:0,clicks:0,conv:0,name:r.campaignName};
+    metaCampAgg[r.campaignName].spend+=r.spend;metaCampAgg[r.campaignName].imp+=r.impressions;
+    metaCampAgg[r.campaignName].clicks+=r.clicks;metaCampAgg[r.campaignName].conv+=r.conversions||0;
+  });
+  Object.keys(metaCampAgg).forEach(function(k){var c=metaCampAgg[k];var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.imp>0?(c.clicks/c.imp*100):0;adRows.push({platform:'META',cls:'meta',name:c.name,status:'active',spend:c.spend,imp:c.imp,clicks:c.clicks,leads:c.conv,cpc:cpc,ctr:ctr});});
+  // META 캠페인 없으면 원본 insights에서 표시 (선택 기간에 데이터 없는 경우)
+  if(Object.keys(metaCampAgg).length===0){meta.insights.forEach(function(c){adRows.push({platform:'META',cls:'meta',name:c.campaignName,status:'active',spend:0,imp:0,clicks:0,leads:0,cpc:0,ctr:0});});}
+  // Naver: 일별 데이터에서 집계
+  var naverCampAgg={};
+  filteredNaverDaily.forEach(function(r){
+    if(!naverCampAgg[r.campaignName])naverCampAgg[r.campaignName]={spend:0,imp:0,clicks:0,name:r.campaignName};
+    naverCampAgg[r.campaignName].spend+=(r.salesAmt||0);naverCampAgg[r.campaignName].imp+=(r.impCnt||0);
+    naverCampAgg[r.campaignName].clicks+=(r.clkCnt||0);
+  });
+  Object.keys(naverCampAgg).forEach(function(k){var c=naverCampAgg[k];var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.imp>0?(c.clicks/c.imp*100):0;adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:'active',spend:c.spend,imp:c.imp,clicks:c.clicks,leads:0,cpc:cpc,ctr:ctr});});
+  if(Object.keys(naverCampAgg).length===0){naver.campaigns.filter(function(c){return c.status==='ELIGIBLE'||c.status==='ACTIVE';}).forEach(function(c){adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:'active',spend:0,imp:0,clicks:0,leads:0,cpc:0,ctr:0});});}
   adRows.push({platform:'GOOGLE',cls:'google',name:'Basic Access \uB300\uAE30 \uC911',status:'pending',spend:null,imp:null,clicks:null,leads:null,cpc:null,ctr:null});
   document.getElementById('adSummaryBody').innerHTML=adRows.map(function(r){var sl=r.status==='active'?'\uD65C\uC131':r.status==='paused'?'\uC77C\uC2DC\uC911\uC9C0':'\uB300\uAE30';return'<tr><td><span class="platform-badge '+r.cls+'">'+r.platform+'</span> '+r.name+'</td><td><span class="status-dot '+r.status+'"></span>'+sl+'</td><td class="num">'+(r.spend!=null?fmtWon(r.spend):'-')+'</td><td class="num">'+(r.imp!=null?fmt(r.imp):'-')+'</td><td class="num">'+(r.clicks!=null?fmt(r.clicks):'-')+'</td><td class="num">'+(r.leads!=null?r.leads+'\uAC74':'-')+'</td><td class="num">'+(r.cpc!=null?fmtWon(Math.round(r.cpc)):'-')+'</td><td class="num">'+(r.ctr!=null?r.ctr.toFixed(2)+'%':'-')+'</td></tr>';}).join('');
 
-  // ---- Ad Charts (line chart) — META + Naver 일별 ----
-  var adDailyLabels=filteredMetaDaily.map(function(d){return parseDate(d.date);});
-  var adDatasets=[{label:'META',data:filteredMetaDaily.map(function(d){return d.spend;}),borderColor:'#1877f2',fill:false,tension:.3,pointRadius:4,borderWidth:2.5}];
-  // Naver 일별 지출 추가
-  if(filteredNaverDaily.length>0){
-    var naverDailyMap={};filteredNaverDaily.forEach(function(r){naverDailyMap[r.date]=(naverDailyMap[r.date]||0)+(r.salesAmt||0);});
-    adDatasets.push({label:'Naver',data:filteredMetaDaily.map(function(d){return naverDailyMap[d.date]||0;}),borderColor:'#03c75a',fill:false,tension:.3,pointRadius:4,borderWidth:2.5});
-  }
+  // ---- Ad Charts (line chart) — campaignDaily + Naver 일별 ----
+  var metaDailyMap={};filteredMetaCampDaily.forEach(function(r){metaDailyMap[r.date]=(metaDailyMap[r.date]||0)+r.spend;});
+  var naverDailyMap={};filteredNaverDaily.forEach(function(r){naverDailyMap[r.date]=(naverDailyMap[r.date]||0)+(r.salesAmt||0);});
+  var allAdDates=Object.keys(Object.assign({},metaDailyMap,naverDailyMap)).sort();
+  var adDailyLabels=allAdDates.map(function(d){return parseDate(d);});
+  var adDatasets=[{label:'META',data:allAdDates.map(function(d){return metaDailyMap[d]||0;}),borderColor:'#1877f2',fill:false,tension:.3,pointRadius:4,borderWidth:2.5}];
+  adDatasets.push({label:'Naver',data:allAdDates.map(function(d){return naverDailyMap[d]||0;}),borderColor:'#03c75a',fill:false,tension:.3,pointRadius:4,borderWidth:2.5});
   destroyChart('adDailySpend');
   chartInstances['adDailySpend']=new Chart(document.getElementById('adDailySpend'),{type:'line',data:{labels:adDailyLabels,datasets:adDatasets},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{position:'top'},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmtWon(ctx.raw);}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#f3f4f6'},ticks:{callback:function(v){return fmtWonShort(v);}}}}}});
 
@@ -319,9 +311,18 @@ function renderOverview(){
   destroyChart('campaignDonut');
   chartInstances['campaignDonut']=new Chart(document.getElementById('campaignDonut'),{type:'doughnut',data:{labels:campN,datasets:[{data:campS,backgroundColor:[COLORS.blue,COLORS.purple,'#03c75a',COLORS.orange,COLORS.green],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{padding:12,font:{size:11}}},tooltip:{callbacks:{label:function(ctx){var t=campS.reduce(function(a,b){return a+b;},0);return ctx.label+': '+fmtWonShort(ctx.raw)+' ('+(ctx.raw/t*100).toFixed(1)+'%)';} }}}}});
 
-  // ---- Blog Table (6: hyperlinks) ----
+  // ---- Blog Table (날짜 필터 적용) ----
   var gscMap={};(gsc.blogPages||[]).forEach(function(p){gscMap[p.keys[0].replace('https://cubig.ai','')]=p;});
-  var blogRows=cubig.blogPages.filter(function(p){return p.dims[0].startsWith('/blogs/')&&!p.dims[0].match(/\/page\/|\/tag\//);}).filter(function(p){return p.dims[1]&&p.dims[1]!=='(not set)';}).slice(0,10).map(function(p){var g=gscMap[p.dims[0]]||{};return{path:p.dims[0],title:p.dims[1].replace(' - CUBIG Blogs','').replace(' - CUBIG',''),ses:p.mets[0],users:p.mets[1],dur:p.mets[2],gClk:g.clicks||0,gImp:g.impressions||0,ctr:g.ctr||0};});
+  // 일별 블로그 페이지 데이터에서 날짜 범위 필터링 후 집계
+  var blogAgg={};
+  (cubig.dailyBlogPages||[]).filter(function(r){return dateInRange(r.dims[0]);}).forEach(function(r){
+    var path=r.dims[1],title=r.dims[2];
+    if(!path.startsWith('/blogs/')||path.match(/\/page\/|\/tag\//))return;
+    if(!title||title==='(not set)')return;
+    if(!blogAgg[path])blogAgg[path]={path:path,title:title,ses:0,users:0,dur:0,cnt:0};
+    blogAgg[path].ses+=r.mets[0];blogAgg[path].users+=r.mets[1];blogAgg[path].dur+=r.mets[2]*r.mets[0];blogAgg[path].cnt+=r.mets[0];
+  });
+  var blogRows=Object.values(blogAgg).sort(function(a,b){return b.ses-a.ses;}).slice(0,10).map(function(p){var g=gscMap[p.path]||{};return{path:p.path,title:p.title.replace(' - CUBIG Blogs','').replace(' - CUBIG','').replace(' - Azoo Blogs',''),ses:p.ses,users:p.users,dur:p.cnt>0?p.dur/p.cnt:0,gClk:g.clicks||0,gImp:g.impressions||0,ctr:g.ctr||0};});
   document.getElementById('blogTableBody').innerHTML=blogRows.map(function(r){return'<tr><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+r.title+'"><a href="https://cubig.ai'+r.path+'" target="_blank" style="color:var(--accent);text-decoration:none">'+r.title+'</a></td><td class="num">'+r.ses+'</td><td class="num">'+r.users+'</td><td class="num">'+fmtTime(r.dur)+'</td><td class="num">'+r.gClk+'</td><td class="num">'+fmt(r.gImp)+'</td><td class="num">'+(r.ctr*100).toFixed(2)+'%</td></tr>';}).join('');
 
   // ---- Country & Query (initial) ----
@@ -336,57 +337,61 @@ function renderOverview(){
 }
 
 function renderChannelDonut(src){
-  var channels;
-  if(src==='llm')channels=DATA.ga4.llm.channels;
-  else if(src==='syn')channels=DATA.ga4.syn.channels;
-  else channels=DATA.ga4.cubig.channels;
+  var dailyCh;
+  if(src==='llm')dailyCh=DATA.ga4.llm.dailyChannels||[];
+  else if(src==='syn')dailyCh=DATA.ga4.syn.dailyChannels||[];
+  else dailyCh=DATA.ga4.cubig.dailyChannels||[];
   var chThis={};
-  channels.filter(function(c){return c.dims[1]==='date_range_0';}).forEach(function(c){chThis[c.dims[0]]=(chThis[c.dims[0]]||0)+c.mets[0];});
+  dailyCh.filter(function(c){return _dateInRange(c.dims[0]);}).forEach(function(c){chThis[c.dims[1]]=(chThis[c.dims[1]]||0)+c.mets[0];});
   var chN=[],chV=[],chBg=[];
   Object.entries(chThis).sort(function(a,b){return b[1]-a[1];}).forEach(function(e){chN.push(e[0]);chV.push(e[1]);chBg.push(CH_COLORS[e[0]]||COLORS.gray);});
   destroyChart('channelDonut');
   chartInstances['channelDonut']=new Chart(document.getElementById('channelDonut'),{type:'doughnut',data:{labels:chN,datasets:[{data:chV,backgroundColor:chBg,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'right',labels:{padding:14,font:{size:12}}},tooltip:{callbacks:{label:function(ctx){var t=ctx.dataset.data.reduce(function(a,b){return a+b;},0);return ctx.label+': '+ctx.raw+' ('+(ctx.raw/t*100).toFixed(1)+'%)';} }}}}});
-  // Referral 세부 (cubig만)
+  // Referral 세부 (cubig만 — 날짜 필터 적용)
   var refEl=document.getElementById('referralDetail');
   if(src==='cubig'){
-    var refSources=DATA.ga4.cubig.referralSources||[];
-    if(refSources.length>0){refEl.innerHTML='<strong>Referral \uC138\uBD80:</strong> '+refSources.map(function(r){return'<span><span class="ref-name">'+r.dims[0]+'</span> '+r.mets[0]+'\uD68C</span>';}).join('');}else{refEl.innerHTML='';}
+    var dailyRef=DATA.ga4.cubig.dailyReferral||[];
+    var refAgg={};dailyRef.filter(function(r){return _dateInRange(r.dims[0]);}).forEach(function(r){refAgg[r.dims[1]]=(refAgg[r.dims[1]]||0)+r.mets[0];});
+    var refArr=Object.entries(refAgg).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+    if(refArr.length>0){refEl.innerHTML='<strong>Referral \uC138\uBD80:</strong> '+refArr.map(function(r){return'<span><span class="ref-name">'+r[0]+'</span> '+r[1]+'\uD68C</span>';}).join('');}else{refEl.innerHTML='';}
   }else{refEl.innerHTML='';}
 }
 
 function renderCountryDonut(src){
-  var countries;
-  if(src==='llm')countries=DATA.ga4.llm.countries;
-  else if(src==='syn')countries=DATA.ga4.syn.countries;
-  else countries=DATA.ga4.cubig.countries; // cubig and blog share same property
-  var n=countries.slice(0,8).map(function(c){return c.dims[0];}),v=countries.slice(0,8).map(function(c){return c.mets[0];});
+  var dailyC;
+  if(src==='llm')dailyC=DATA.ga4.llm.dailyCountries||[];
+  else if(src==='syn')dailyC=DATA.ga4.syn.dailyCountries||[];
+  else dailyC=DATA.ga4.cubig.dailyCountries||[]; // cubig and blog share same property
+  var countryAgg={};
+  dailyC.filter(function(c){return _dateInRange(c.dims[0]);}).forEach(function(c){countryAgg[c.dims[1]]=(countryAgg[c.dims[1]]||0)+c.mets[0];});
+  var sorted=Object.entries(countryAgg).sort(function(a,b){return b[1]-a[1];}).slice(0,8);
+  var n=sorted.map(function(c){return c[0];}),v=sorted.map(function(c){return c[1];});
   var cols=[COLORS.blue,COLORS.green,COLORS.orange,COLORS.purple,COLORS.pink,COLORS.teal,COLORS.red,'#d1d5db'];
   destroyChart('countryDonut');
   chartInstances['countryDonut']=new Chart(document.getElementById('countryDonut'),{type:'doughnut',data:{labels:n,datasets:[{data:v,backgroundColor:cols,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'42%',layout:{padding:10},plugins:{legend:{position:'right',labels:{padding:14,font:{size:13}}},tooltip:{callbacks:{label:function(ctx){var t=ctx.dataset.data.reduce(function(a,b){return a+b;},0);return ctx.label+': '+ctx.raw+'\uBA85 ('+(ctx.raw/t*100).toFixed(1)+'%)';} }}}}});
 }
 
 function renderQueryTable(src){
-  var queries,prevQueries,prevKeys;
+  var queries,recent2w;
   if(src==='llm'){
     queries=(DATA.gsc.llm.queries||[]).slice(0,10);
-    prevQueries=DATA.gsc.llm.queriesPrev||[];
+    recent2w=DATA.gsc.llm.recent2w||[];
   }else if(src==='syn'){
     queries=(DATA.gsc.syn?.queries||[]).slice(0,10);
-    prevQueries=DATA.gsc.syn?.queriesPrev||[];
+    recent2w=DATA.gsc.syn?.recent2w||[];
   }else if(src==='blog'){
     queries=(DATA.gsc.cubig.blogQueries||[]).slice(0,10);
-    prevQueries=DATA.gsc.cubig.blogQueriesPrev||[];
+    recent2w=DATA.gsc.cubig.blogRecent2w||[];
   }else{
     queries=(DATA.gsc.cubig.queries||[]).slice(0,10);
-    prevQueries=DATA.gsc.cubig.queriesPrev||[];
+    recent2w=DATA.gsc.cubig.recent2w||[];
   }
-  var prevKeyList=prevQueries.map(function(q){return q.keys[0].toLowerCase();});
+  // NEW 기준: 최근 2주 데이터에 없는 키워드만 NEW
+  var recent2wKeys=recent2w.map(function(q){return q.keys[0].toLowerCase();});
   function checkIsNew(keyword){
     var kw=keyword.toLowerCase();
-    for(var i=0;i<prevKeyList.length;i++){
-      if(prevKeyList[i]===kw)return false;
-      if(kw.length>=4&&prevKeyList[i].indexOf(kw)>=0)return false;
-      if(prevKeyList[i].length>=4&&kw.indexOf(prevKeyList[i])>=0)return false;
+    for(var i=0;i<recent2wKeys.length;i++){
+      if(recent2wKeys[i]===kw)return false;
     }
     return true;
   }
