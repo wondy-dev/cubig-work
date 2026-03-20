@@ -3,9 +3,10 @@
 /**
  * CUBIG 마케팅 통합 대시보드 - 데이터 수집기
  *
- * 4개 API에서 데이터를 수집하여 outputs/dashboard/data.json에 저장
- * - GA4 Data API (CUBIG 공홈 + LLM Capsule)
- * - Google Search Console (cubig.ai + llmcapsule.ai)
+ * 5개 API에서 데이터를 수집하여 outputs/dashboard/data.json에 저장
+ * - GA4 Data API (CUBIG 공홈 + LLM Capsule + SynTitan)
+ * - Google Search Console (cubig.ai + llmcapsule.ai + syntitan.ai)
+ * - Google Ads API (캠페인 성과)
  * - Naver Ads API
  * - META Ads API
  *
@@ -773,6 +774,97 @@ async function collectMetaAds() {
   }
 }
 
+// ========== Google Ads 수집 (google-ads-api 패키지 사용) ==========
+async function collectGoogleAds() {
+  console.log('  [Google Ads] 수집 시작...');
+  const DEVELOPER_TOKEN = ENV.GOOGLE_ADS_DEVELOPER_TOKEN;
+  const CUSTOMER_ID = (ENV.GOOGLE_ADS_CUSTOMER_ID || '').replace(/-/g, '');
+  const MCC_ID = (ENV.GOOGLE_ADS_MCC_ID || '').replace(/-/g, '');
+
+  if (!DEVELOPER_TOKEN || !CUSTOMER_ID) {
+    console.log('    Google Ads 환경변수 누락 - 스킵');
+    return { campaigns: [], daily: [], dailyPrev: [] };
+  }
+
+  // OAuth credentials
+  const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH, 'utf8'));
+  const token = JSON.parse(fs.readFileSync(TOKEN_PATH, 'utf8'));
+
+  try {
+    const { GoogleAdsApi } = require('google-ads-api');
+
+    const client = new GoogleAdsApi({
+      client_id: credentials.installed.client_id,
+      client_secret: credentials.installed.client_secret,
+      developer_token: DEVELOPER_TOKEN
+    });
+
+    const customer = client.Customer({
+      customer_id: CUSTOMER_ID,
+      login_customer_id: MCC_ID,
+      refresh_token: token.refresh_token
+    });
+
+    // 이번 기간 일별 성과
+    const dailyRows = await customer.query(`
+      SELECT campaign.name, campaign.id, campaign.status,
+             metrics.impressions, metrics.clicks, metrics.cost_micros,
+             metrics.ctr, metrics.average_cpc, metrics.conversions,
+             segments.date
+      FROM campaign
+      WHERE segments.date BETWEEN '${fmt(THIS_WEEK_START)}' AND '${fmt(THIS_WEEK_END)}'
+      ORDER BY segments.date ASC
+    `);
+
+    // 비교 기간 일별 성과
+    const dailyPrevRows = await customer.query(`
+      SELECT campaign.name, campaign.id, campaign.status,
+             metrics.impressions, metrics.clicks, metrics.cost_micros,
+             metrics.ctr, metrics.average_cpc, metrics.conversions,
+             segments.date
+      FROM campaign
+      WHERE segments.date BETWEEN '${fmt(LAST_WEEK_START)}' AND '${fmt(LAST_WEEK_END)}'
+      ORDER BY segments.date ASC
+    `);
+
+    function parseRow(r) {
+      return {
+        date: r.segments ? r.segments.date : null,
+        campaignName: r.campaign ? r.campaign.name : '',
+        campaignId: r.campaign ? String(r.campaign.id || '') : '',
+        campaignStatus: r.campaign ? r.campaign.status : 0,
+        impressions: r.metrics ? Number(r.metrics.impressions || 0) : 0,
+        clicks: r.metrics ? Number(r.metrics.clicks || 0) : 0,
+        spend: r.metrics ? Number(r.metrics.cost_micros || 0) / 1000000 : 0,
+        ctr: r.metrics ? Number(r.metrics.ctr || 0) : 0,
+        cpc: r.metrics ? Number(r.metrics.average_cpc || 0) / 1000000 : 0,
+        conversions: r.metrics ? Number(r.metrics.conversions || 0) : 0
+      };
+    }
+
+    const daily = dailyRows.map(parseRow);
+    const dailyPrev = dailyPrevRows.map(parseRow);
+
+    // 캠페인 목록 (중복 제거)
+    const campaignMap = {};
+    for (const r of daily) {
+      if (!campaignMap[r.campaignId]) {
+        campaignMap[r.campaignId] = {
+          id: r.campaignId, name: r.campaignName, status: r.campaignStatus
+        };
+      }
+    }
+    const campaigns = Object.values(campaignMap);
+
+    console.log(`  [Google Ads] 수집 완료 (캠페인 ${campaigns.length}개, 일별 ${daily.length}건)`);
+    return { campaigns, daily, dailyPrev };
+  } catch (err) {
+    console.error('    Google Ads 오류:', err.message);
+    if (err.errors) console.error('    상세:', JSON.stringify(err.errors).substring(0, 300));
+    return { campaigns: [], daily: [], dailyPrev: [] };
+  }
+}
+
 // ========== 메인 ==========
 async function main() {
   console.log(`\n========================================`);
@@ -784,9 +876,10 @@ async function main() {
   const auth = await getGoogleAuth();
 
   // 병렬 수집 (Google API는 같은 auth, Naver/META는 독립)
-  const [ga4, gsc, naver, meta] = await Promise.all([
+  const [ga4, gsc, googleAds, naver, meta] = await Promise.all([
     collectGA4(auth),
     collectGSC(auth),
+    collectGoogleAds(),
     collectNaverAds(),
     collectMetaAds()
   ]);
@@ -801,6 +894,7 @@ async function main() {
     },
     ga4,
     gsc,
+    googleAds,
     naver,
     meta
   };

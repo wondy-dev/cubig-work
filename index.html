@@ -157,6 +157,8 @@ function renderOverview(){
   var filteredSynFromCubig=(cubig.synFromCubigDaily||[]).filter(function(r){return dateInRange(r.dims[0]);});
   var filteredMetaCampDaily=(meta.campaignDaily||[]).filter(function(r){return dateInRange(r.date);});
   var filteredNaverDaily=(naver.statsDaily||[]).filter(function(r){return dateInRange(r.date);});
+  var gads=DATA.googleAds||{};
+  var filteredGadsDaily=(gads.daily||[]).filter(function(r){return dateInRange(r.date);});
 
   // 날짜 범위 표시
   var periodStart=selectedRange[0].toISOString().split('T')[0];
@@ -182,6 +184,7 @@ function renderOverview(){
   var prevMetaDaily=meta.daily.filter(function(r){return dateInPrevRange(r.date);});
   var prevNaverDaily=(naver.statsDaily||[]).filter(function(r){return dateInPrevRange(r.date);});
   var prevMetaCampDaily=(meta.campaignDaily||[]).filter(function(r){return dateInPrevRange(r.date);});
+  var prevGadsDaily=(gads.daily||[]).filter(function(r){return dateInPrevRange(r.date);});
 
   // KPI: 선택 기간 합산
   var totalSes=filteredCubigDaily.reduce(function(s,r){return s+r.mets[0];},0)+filteredLlmDaily.reduce(function(s,r){return s+r.mets[0];},0)+filteredSynDaily.reduce(function(s,r){return s+r.mets[0];},0);
@@ -204,8 +207,11 @@ function renderOverview(){
   // Naver spend (선택 기간 vs 직전 기간)
   var naverSpend=filteredNaverDaily.reduce(function(s,c){return s+(c.salesAmt||0);},0);
   var naverSpendPrev=prevNaverDaily.reduce(function(s,c){return s+(c.salesAmt||0);},0);
-  var totalAdSpend=metaSpend+naverSpend;
-  var totalAdSpendPrev=metaSpendPrev+naverSpendPrev;
+  // Google Ads spend
+  var gadsSpend=filteredGadsDaily.reduce(function(s,r){return s+r.spend;},0);
+  var gadsSpendPrev=prevGadsDaily.reduce(function(s,r){return s+r.spend;},0);
+  var totalAdSpend=metaSpend+naverSpend+gadsSpend;
+  var totalAdSpendPrev=metaSpendPrev+naverSpendPrev+gadsSpendPrev;
 
   // SynTitan ← cubig.ai 유입 세션
   var synClickThis=filteredSynFromCubig.reduce(function(s,r){return s+r.mets[0];},0);
@@ -237,13 +243,15 @@ function renderOverview(){
   if(metaLeads>0)ins.push('META \uB9AC\uB4DC <span class="highlight">'+metaLeads+'\uAC74</span> (CPL '+fmtWon(Math.round(metaCPL))+')');
   var naverClks=filteredNaverDaily.reduce(function(s,c){return s+(c.clkCnt||0);},0);
   if(naverSpend>0)ins.push('Naver Ads <span class="highlight">'+fmtWon(naverSpend)+'</span> \uC9C0\uCD9C / '+naverClks+'\uD074\uB9AD');
+  var gadsClks=filteredGadsDaily.reduce(function(s,r){return s+r.clicks;},0);
+  if(gadsSpend>0)ins.push('Google Ads <span class="highlight">'+fmtWon(Math.round(gadsSpend))+'</span> \uC9C0\uCD9C / '+gadsClks+'\uD074\uB9AD');
   document.getElementById('insightList').innerHTML=ins.map(function(i){return'<li>'+i+'</li>';}).join('');
 
   // ---- KPI Cards (1: Try SynTitan sub text removed) ----
   var kpis=[
     {label:'\uCD1D \uC0AC\uC6A9\uC790',sub:'Cubig + LLMCapsule + SynTitan',value:fmt(totalUsers),change:pctChange(totalUsers,prevUsers),spark:filteredCubigDaily.map(function(d){return d.mets[1];}),color:COLORS.blue},
     {label:'\uD3C9\uADE0 \uCC38\uC5EC \uCCB4\uB958',sub:'cubig.ai \uC2E4\uC81C \uD65C\uC131 \uC2DC\uAC04',value:fmtDur(avgEngThis),change:pctChange(avgEngThis,avgEngPrev),spark:filteredCubigDaily.map(function(d){return d.mets[0];}),color:COLORS.green},
-    {label:'\uCD1D \uAD11\uACE0\uBE44',sub:'\uC804\uCCB4 \uB9E4\uCCB4 \uD569\uC0B0',value:fmtWon(totalAdSpend),change:pctChange(totalAdSpend,totalAdSpendPrev),spark:(function(){var dm={};filteredMetaCampDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+r.spend;});filteredNaverDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+(r.salesAmt||0);});return Object.keys(dm).sort().map(function(k){return dm[k];});})(),color:COLORS.orange},
+    {label:'\uCD1D \uAD11\uACE0\uBE44',sub:'\uC804\uCCB4 \uB9E4\uCCB4 \uD569\uC0B0',value:fmtWon(totalAdSpend),change:pctChange(totalAdSpend,totalAdSpendPrev),spark:(function(){var dm={};filteredMetaCampDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+r.spend;});filteredNaverDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+(r.salesAmt||0);});filteredGadsDaily.forEach(function(r){dm[r.date]=(dm[r.date]||0)+r.spend;});return Object.keys(dm).sort().map(function(k){return dm[k];});})(),color:COLORS.orange},
     {label:'Try SynTitan',sub:'',value:synClickThis+'\uD68C',change:pctChange(synClickThis,synClickPrev),spark:[],color:COLORS.purple}
   ];
   var kpiGrid=document.getElementById('kpiGrid');kpiGrid.innerHTML='';
@@ -292,16 +300,26 @@ function renderOverview(){
   });
   Object.keys(naverCampAgg).forEach(function(k){var c=naverCampAgg[k];var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.imp>0?(c.clicks/c.imp*100):0;adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:'active',spend:c.spend,imp:c.imp,clicks:c.clicks,leads:0,cpc:cpc,ctr:ctr});});
   if(Object.keys(naverCampAgg).length===0){naver.campaigns.filter(function(c){return c.status==='ELIGIBLE'||c.status==='ACTIVE';}).forEach(function(c){adRows.push({platform:'NAVER',cls:'naver',name:c.name,status:'active',spend:0,imp:0,clicks:0,leads:0,cpc:0,ctr:0});});}
-  adRows.push({platform:'GOOGLE',cls:'google',name:'Basic Access \uB300\uAE30 \uC911',status:'pending',spend:null,imp:null,clicks:null,leads:null,cpc:null,ctr:null});
+  // Google Ads: 일별 데이터에서 캠페인별 집계
+  var gadsCampAgg={};
+  filteredGadsDaily.forEach(function(r){
+    if(!gadsCampAgg[r.campaignName])gadsCampAgg[r.campaignName]={spend:0,imp:0,clicks:0,conv:0,name:r.campaignName};
+    gadsCampAgg[r.campaignName].spend+=r.spend;gadsCampAgg[r.campaignName].imp+=r.impressions;
+    gadsCampAgg[r.campaignName].clicks+=r.clicks;gadsCampAgg[r.campaignName].conv+=r.conversions||0;
+  });
+  Object.keys(gadsCampAgg).forEach(function(k){var c=gadsCampAgg[k];var cpc=c.clicks>0?c.spend/c.clicks:0;var ctr=c.imp>0?(c.clicks/c.imp*100):0;adRows.push({platform:'GOOGLE',cls:'google',name:c.name,status:'active',spend:c.spend,imp:c.imp,clicks:c.clicks,leads:c.conv,cpc:cpc,ctr:ctr});});
+  if(Object.keys(gadsCampAgg).length===0&&(gads.campaigns||[]).length>0){(gads.campaigns||[]).forEach(function(c){adRows.push({platform:'GOOGLE',cls:'google',name:c.name,status:c.status===2?'active':'paused',spend:0,imp:0,clicks:0,leads:0,cpc:0,ctr:0});});}
   document.getElementById('adSummaryBody').innerHTML=adRows.map(function(r){var sl=r.status==='active'?'\uD65C\uC131':r.status==='paused'?'\uC77C\uC2DC\uC911\uC9C0':'\uB300\uAE30';return'<tr><td><span class="platform-badge '+r.cls+'">'+r.platform+'</span> '+r.name+'</td><td><span class="status-dot '+r.status+'"></span>'+sl+'</td><td class="num">'+(r.spend!=null?fmtWon(r.spend):'-')+'</td><td class="num">'+(r.imp!=null?fmt(r.imp):'-')+'</td><td class="num">'+(r.clicks!=null?fmt(r.clicks):'-')+'</td><td class="num">'+(r.leads!=null?r.leads+'\uAC74':'-')+'</td><td class="num">'+(r.cpc!=null?fmtWon(Math.round(r.cpc)):'-')+'</td><td class="num">'+(r.ctr!=null?r.ctr.toFixed(2)+'%':'-')+'</td></tr>';}).join('');
 
   // ---- Ad Charts (line chart) — campaignDaily + Naver 일별 ----
   var metaDailyMap={};filteredMetaCampDaily.forEach(function(r){metaDailyMap[r.date]=(metaDailyMap[r.date]||0)+r.spend;});
   var naverDailyMap={};filteredNaverDaily.forEach(function(r){naverDailyMap[r.date]=(naverDailyMap[r.date]||0)+(r.salesAmt||0);});
-  var allAdDates=Object.keys(Object.assign({},metaDailyMap,naverDailyMap)).sort();
+  var gadsDailyMap={};filteredGadsDaily.forEach(function(r){gadsDailyMap[r.date]=(gadsDailyMap[r.date]||0)+r.spend;});
+  var allAdDates=Object.keys(Object.assign({},metaDailyMap,naverDailyMap,gadsDailyMap)).sort();
   var adDailyLabels=allAdDates.map(function(d){return parseDate(d);});
   var adDatasets=[{label:'META',data:allAdDates.map(function(d){return metaDailyMap[d]||0;}),borderColor:'#1877f2',fill:false,tension:.3,pointRadius:4,borderWidth:2.5}];
   adDatasets.push({label:'Naver',data:allAdDates.map(function(d){return naverDailyMap[d]||0;}),borderColor:'#03c75a',fill:false,tension:.3,pointRadius:4,borderWidth:2.5});
+  adDatasets.push({label:'Google',data:allAdDates.map(function(d){return gadsDailyMap[d]||0;}),borderColor:'#ea4335',fill:false,tension:.3,pointRadius:4,borderWidth:2.5});
   destroyChart('adDailySpend');
   chartInstances['adDailySpend']=new Chart(document.getElementById('adDailySpend'),{type:'line',data:{labels:adDailyLabels,datasets:adDatasets},options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{position:'top'},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmtWon(ctx.raw);}}}},scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#f3f4f6'},ticks:{callback:function(v){return fmtWonShort(v);}}}}}});
 
