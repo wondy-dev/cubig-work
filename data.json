@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "collectedAt": "2026-03-20T04:40:51.585Z",
+    "collectedAt": "2026-03-20T04:43:56.162Z",
     "period": 365,
     "thisWeek": {
       "start": "2025-03-20",
@@ -24,9 +24,9 @@
           ],
           "mets": [
             56250,
-            48913,
-            45815,
-            275396,
+            48920,
+            45817,
+            275399,
             1688691,
             0.8505422222222222
           ]
@@ -3691,9 +3691,9 @@
             "20260319"
           ],
           "mets": [
-            119,
-            114,
-            257
+            120,
+            115,
+            260
           ]
         }
       ],
@@ -6979,7 +6979,7 @@
             "20260319"
           ],
           "mets": [
-            119,
+            120,
             2237
           ]
         }
@@ -33395,8 +33395,8 @@
             "date_range_0"
           ],
           "mets": [
-            1857,
-            644
+            1860,
+            645
           ]
         },
         {
@@ -33505,8 +33505,8 @@
             "United States"
           ],
           "mets": [
-            6709,
-            7277
+            6710,
+            7280
           ]
         },
         {
@@ -177672,10 +177672,1174 @@
     "dailyPrev": []
   },
   "naver": {
-    "campaigns": [],
+    "campaigns": [
+      {
+        "id": "cmp-a001-01-000000010083305",
+        "name": "국내_파워링크_CUBIG",
+        "type": "WEB_SITE",
+        "status": "ELIGIBLE",
+        "dailyBudget": 33000
+      }
+    ],
     "stats": [],
     "statsPrev": [],
-    "statsDaily": []
+    "statsDaily": [
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 124,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2025-12-05",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.56,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 361,
+        "cpc": 622,
+        "salesAmt": 1243,
+        "date": "2025-12-06",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 1.2,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 5,
+        "impCnt": 418,
+        "cpc": 854,
+        "salesAmt": 4268,
+        "date": "2025-12-07",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.44,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 232,
+        "cpc": 748,
+        "salesAmt": 748,
+        "date": "2025-12-08",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.43,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 471,
+        "cpc": 1353,
+        "salesAmt": 2706,
+        "date": "2025-12-09",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.27,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 1121,
+        "cpc": 858,
+        "salesAmt": 2574,
+        "date": "2025-12-10",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.1,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 1070,
+        "cpc": 77,
+        "salesAmt": 77,
+        "date": "2025-12-11",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.21,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 966,
+        "cpc": 803,
+        "salesAmt": 1606,
+        "date": "2025-12-12",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.31,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 651,
+        "cpc": 1458,
+        "salesAmt": 2915,
+        "date": "2025-12-13",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 672,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2025-12-14",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.73,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 8,
+        "impCnt": 1099,
+        "cpc": 1096,
+        "salesAmt": 8767,
+        "date": "2025-12-15",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.75,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 8,
+        "impCnt": 1079,
+        "cpc": 1027,
+        "salesAmt": 8217,
+        "date": "2025-12-16",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.29,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 1051,
+        "cpc": 1225,
+        "salesAmt": 3674,
+        "date": "2025-12-17",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.31,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 975,
+        "cpc": 675,
+        "salesAmt": 2024,
+        "date": "2025-12-18",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.37,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 821,
+        "cpc": 935,
+        "salesAmt": 2805,
+        "date": "2025-12-19",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.19,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 534,
+        "cpc": 1804,
+        "salesAmt": 1804,
+        "date": "2025-12-20",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.72,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 4,
+        "impCnt": 562,
+        "cpc": 1073,
+        "salesAmt": 4290,
+        "date": "2025-12-21",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.59,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 7,
+        "impCnt": 1201,
+        "cpc": 871,
+        "salesAmt": 6094,
+        "date": "2025-12-22",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.43,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 5,
+        "impCnt": 1185,
+        "cpc": 821,
+        "salesAmt": 4103,
+        "date": "2025-12-23",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 957,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2025-12-24",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.3,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 667,
+        "cpc": 484,
+        "salesAmt": 968,
+        "date": "2025-12-25",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.29,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 708,
+        "cpc": 748,
+        "salesAmt": 1496,
+        "date": "2025-12-26",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 490,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2025-12-27",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.37,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 544,
+        "cpc": 1705,
+        "salesAmt": 3410,
+        "date": "2025-12-28",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.38,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 4,
+        "impCnt": 1062,
+        "cpc": 913,
+        "salesAmt": 3652,
+        "date": "2025-12-29",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.53,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 5,
+        "impCnt": 951,
+        "cpc": 845,
+        "salesAmt": 4224,
+        "date": "2025-12-30",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.45,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 679,
+        "cpc": 1096,
+        "salesAmt": 3289,
+        "date": "2025-12-31",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.18,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 572,
+        "cpc": 935,
+        "salesAmt": 935,
+        "date": "2026-01-01",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.38,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 805,
+        "cpc": 1155,
+        "salesAmt": 3465,
+        "date": "2026-01-02",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.3,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 675,
+        "cpc": 886,
+        "salesAmt": 1771,
+        "date": "2026-01-03",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.41,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 743,
+        "cpc": 484,
+        "salesAmt": 1452,
+        "date": "2026-01-04",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.46,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 5,
+        "impCnt": 1096,
+        "cpc": 1122,
+        "salesAmt": 5610,
+        "date": "2026-01-05",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.36,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 4,
+        "impCnt": 1122,
+        "cpc": 811,
+        "salesAmt": 3245,
+        "date": "2026-01-06",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.29,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 1046,
+        "cpc": 700,
+        "salesAmt": 2101,
+        "date": "2026-01-07",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.29,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 1037,
+        "cpc": 1181,
+        "salesAmt": 3542,
+        "date": "2026-01-08",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.11,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 949,
+        "cpc": 836,
+        "salesAmt": 836,
+        "date": "2026-01-09",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.46,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 658,
+        "cpc": 1210,
+        "salesAmt": 3630,
+        "date": "2026-01-10",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 677,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-01-11",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.2,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 1020,
+        "cpc": 825,
+        "salesAmt": 1650,
+        "date": "2026-01-12",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.19,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 1057,
+        "cpc": 842,
+        "salesAmt": 1683,
+        "date": "2026-01-13",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 1060,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-01-14",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.48,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 5,
+        "impCnt": 1062,
+        "cpc": 1107,
+        "salesAmt": 5533,
+        "date": "2026-01-15",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.56,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 5,
+        "impCnt": 909,
+        "cpc": 724,
+        "salesAmt": 3619,
+        "date": "2026-01-16",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.32,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 629,
+        "cpc": 1045,
+        "salesAmt": 2090,
+        "date": "2026-01-17",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.15,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 684,
+        "cpc": 660,
+        "salesAmt": 660,
+        "date": "2026-01-18",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.69,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 7,
+        "impCnt": 1029,
+        "cpc": 935,
+        "salesAmt": 6545,
+        "date": "2026-01-19",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.97,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 10,
+        "impCnt": 1035,
+        "cpc": 867,
+        "salesAmt": 8668,
+        "date": "2026-01-20",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.19,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 1069,
+        "cpc": 776,
+        "salesAmt": 1551,
+        "date": "2026-01-21",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.19,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 1094,
+        "cpc": 831,
+        "salesAmt": 1661,
+        "date": "2026-01-22",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.2,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 1047,
+        "cpc": 363,
+        "salesAmt": 726,
+        "date": "2026-01-23",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 756,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-01-24",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.26,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 785,
+        "cpc": 688,
+        "salesAmt": 1375,
+        "date": "2026-01-25",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.35,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 4,
+        "impCnt": 1166,
+        "cpc": 776,
+        "salesAmt": 3102,
+        "date": "2026-01-26",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.25,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 1230,
+        "cpc": 1093,
+        "salesAmt": 3278,
+        "date": "2026-01-27",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.36,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 4,
+        "impCnt": 1142,
+        "cpc": 1130,
+        "salesAmt": 4521,
+        "date": "2026-01-28",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.32,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 947,
+        "cpc": 612,
+        "salesAmt": 1837,
+        "date": "2026-01-29",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.27,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 751,
+        "cpc": 875,
+        "salesAmt": 1749,
+        "date": "2026-01-30",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.3,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 338,
+        "cpc": 1848,
+        "salesAmt": 1848,
+        "date": "2026-01-31",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 364,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-01",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 491,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-02",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.24,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 420,
+        "cpc": 418,
+        "salesAmt": 418,
+        "date": "2026-02-03",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 294,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-04",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 418,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-05",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.26,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 388,
+        "cpc": 858,
+        "salesAmt": 858,
+        "date": "2026-02-06",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.73,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 274,
+        "cpc": 1645,
+        "salesAmt": 3289,
+        "date": "2026-02-07",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.34,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 297,
+        "cpc": 1144,
+        "salesAmt": 1144,
+        "date": "2026-02-08",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 413,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-09",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 377,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-10",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.55,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 368,
+        "cpc": 1144,
+        "salesAmt": 2288,
+        "date": "2026-02-11",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.29,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 356,
+        "cpc": 1925,
+        "salesAmt": 1925,
+        "date": "2026-02-12",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 406,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-13",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 247,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-14",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 302,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-15",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 200,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-16",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 236,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-17",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 240,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-18",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.31,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 332,
+        "cpc": 1177,
+        "salesAmt": 1177,
+        "date": "2026-02-19",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 302,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-20",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 219,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-21",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 274,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-22",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.31,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 332,
+        "cpc": 1430,
+        "salesAmt": 1430,
+        "date": "2026-02-23",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.3,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 342,
+        "cpc": 1089,
+        "salesAmt": 1089,
+        "date": "2026-02-24",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.31,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 332,
+        "cpc": 77,
+        "salesAmt": 77,
+        "date": "2026-02-25",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.69,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 294,
+        "cpc": 1612,
+        "salesAmt": 3223,
+        "date": "2026-02-26",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 290,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-27",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 234,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-02-28",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 226,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-01",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.41,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 249,
+        "cpc": 1056,
+        "salesAmt": 1056,
+        "date": "2026-03-02",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 283,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-03",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 270,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-04",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.32,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 313,
+        "cpc": 330,
+        "salesAmt": 330,
+        "date": "2026-03-05",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.69,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 290,
+        "cpc": 583,
+        "salesAmt": 1166,
+        "date": "2026-03-06",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 214,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-07",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 225,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-08",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 322,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-09",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.31,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 333,
+        "cpc": 1067,
+        "salesAmt": 1067,
+        "date": "2026-03-10",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.3,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 336,
+        "cpc": 1045,
+        "salesAmt": 1045,
+        "date": "2026-03-11",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 345,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-12",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 313,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-13",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 1.12,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 3,
+        "impCnt": 269,
+        "cpc": 1078,
+        "salesAmt": 3234,
+        "date": "2026-03-14",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 0,
+        "impCnt": 295,
+        "cpc": 0,
+        "salesAmt": 0,
+        "date": "2026-03-15",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.24,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 418,
+        "cpc": 396,
+        "salesAmt": 396,
+        "date": "2026-03-16",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.23,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 435,
+        "cpc": 77,
+        "salesAmt": 77,
+        "date": "2026-03-17",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.25,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 1,
+        "impCnt": 408,
+        "cpc": 1826,
+        "salesAmt": 1826,
+        "date": "2026-03-18",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      },
+      {
+        "ctr": 0.5,
+        "id": "cmp-a001-01-000000010083305",
+        "clkCnt": 2,
+        "impCnt": 408,
+        "cpc": 1458,
+        "salesAmt": 2915,
+        "date": "2026-03-19",
+        "campaignName": "국내_파워링크_CUBIG",
+        "campaignId": "cmp-a001-01-000000010083305"
+      }
+    ]
   },
   "meta": {
     "campaigns": [
