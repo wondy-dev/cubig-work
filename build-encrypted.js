@@ -1,21 +1,30 @@
 #!/usr/bin/env node
 
 /**
- * dashboard.html을 staticrypt로 암호화하여 index.html을 생성합니다.
- * data.json은 별도 파일로 배포됩니다 (인라인하지 않음).
+ * dashboard.html에 복호화 키를 삽입합니다.
+ * 이후 staticrypt로 암호화되므로 키는 안전하게 보호됩니다.
+ * 
+ * data.json은 encrypt-data.js로 별도 암호화됩니다.
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const DASHBOARD_PATH = path.join(__dirname, 'dashboard.html');
+const OUTPUT_PATH = path.join(__dirname, 'dashboard-build.html');
+const PASSWORD = process.env.STATICRYPT_PASSWORD;
 
-// dashboard.html 존재 확인
-if (!fs.existsSync(DASHBOARD_PATH)) {
-  console.error('dashboard.html이 없습니다.');
+if (!PASSWORD) {
+  console.error('STATICRYPT_PASSWORD 환경변수가 필요합니다.');
   process.exit(1);
 }
 
-const size = fs.statSync(DASHBOARD_PATH).size;
-console.log(`dashboard.html 크기: ${(size / 1024).toFixed(1)} KB`);
-console.log('data.json은 별도 파일로 배포됩니다.');
+let html = fs.readFileSync(DASHBOARD_PATH, 'utf8');
+
+// DECRYPTION_KEY 변수를 </head> 앞에 삽입
+// 이 키는 StaticCrypt로 암호화된 HTML 안에 들어가므로 외부에서 볼 수 없음
+const keyScript = `<script>var DECRYPTION_KEY="${PASSWORD}";</script>`;
+html = html.replace('</head>', keyScript + '\n</head>');
+
+fs.writeFileSync(OUTPUT_PATH, html, 'utf8');
+console.log(`dashboard-build.html 생성 완료 (${(fs.statSync(OUTPUT_PATH).size / 1024).toFixed(1)} KB)`);
