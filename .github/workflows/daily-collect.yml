@@ -45,16 +45,15 @@ jobs:
           GOOGLE_ADS_MCC_ID: ${{ secrets.GOOGLE_ADS_MCC_ID }}
         run: node collect-all.js --period 365
 
-      - name: Copy data to root for build
+      - name: Copy data to root for deployment
         run: cp outputs/dashboard/data.json ./data.json
 
-      - name: Build encrypted dashboard
+      - name: Encrypt dashboard with staticrypt
         env:
           STATICRYPT_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
         run: |
           npm install -g staticrypt
-          node build-encrypted.js
-          npx staticrypt combined.html -p "$STATICRYPT_PASSWORD" --short -d . \
+          npx staticrypt dashboard.html -p "$STATICRYPT_PASSWORD" --short -d . \
             --template-title "CUBIG Marketing Dashboard" \
             --template-instructions "대시보드에 접근하려면 비밀번호를 입력하세요." \
             --template-button "로그인" \
@@ -62,18 +61,16 @@ jobs:
             --template-error "비밀번호가 올바르지 않습니다." \
             --remember 30 \
             --template-remember "30일간 기억하기"
-          mv combined.html index.html
-          rm -f data.json
+          mv dashboard.html index.html
 
       - name: Commit and push updated dashboard
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git rm --cached data.json --ignore-unmatch
+          git add index.html data.json
           if git diff --cached --quiet; then
             echo "No data changes detected"
           else
-            git commit -m "chore: daily encrypted dashboard update $(date -u +%Y-%m-%d)"
+            git commit -m "chore: daily dashboard update $(date -u +%Y-%m-%d)"
             git push
           fi
