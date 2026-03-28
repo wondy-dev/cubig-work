@@ -69,6 +69,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .referral-detail{margin-top:8px;font-size:12px;color:var(--text-sub);line-height:1.8}
 .referral-detail span{display:inline-block;margin-right:14px;white-space:nowrap}
 .referral-detail .ref-name{color:var(--text);font-weight:500}
+.tooltip-wrap{position:relative;display:inline}.tooltip-wrap .tooltip-text{visibility:hidden;opacity:0;position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 6px);background:rgba(30,30,46,.88);color:#fff;font-size:11px;font-weight:400;padding:5px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;transition:opacity .15s;z-index:50;letter-spacing:0}.tooltip-wrap:hover .tooltip-text{visibility:visible;opacity:.6}
 @media(max-width:1024px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.chart-row{grid-template-columns:1fr}.content{padding:16px}.header{padding:12px 16px}.tabs{padding:0 16px}}
 </style>
 </head>
@@ -91,20 +92,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="tab-content active" id="tab-overview">
     <div class="insight-box" id="insightBox"><h3>Weekly Insights &mdash; <span id="insightPeriod"></span></h3><ul class="insight-list" id="insightList"></ul></div>
     <div class="kpi-grid" id="kpiGrid"></div>
-    <div class="section-header">TRAFFIC TREND</div>
+    <div class="section-header"><span class="tooltip-wrap">TRAFFIC TREND<span class="tooltip-text">GA4 세션 기준, 날짜 필터 적용</span></span></div>
     <div class="chart-row single"><div class="chart-card"><h4>일별 트래픽 추이 <span class="sub">Cubig (블로그 제외) / Blog / LLM Capsule / SynTitan</span></h4><div class="chart-container h250"><canvas id="dailyTrafficChart"></canvas></div></div></div>
     <div class="chart-row">
-      <div class="chart-card"><h4>채널별 유입 분포<div class="filter-group"><button class="filter-btn active" data-filter="channel" data-value="cubig">Cubig</button><button class="filter-btn" data-filter="channel" data-value="llm">LLMCapsule</button><button class="filter-btn" data-filter="channel" data-value="syn">SynTitan</button></div></h4><div class="chart-container h300"><canvas id="channelDonut"></canvas></div><div class="referral-detail" id="referralDetail"></div></div>
-      <div class="chart-card"><h4>채널별 같은 기간 대비 변화</h4><div class="chart-container h300"><canvas id="channelCompare"></canvas></div></div>
+      <div class="chart-card"><h4><span class="tooltip-wrap">채널별 유입 분포<span class="tooltip-text">GA4 sessionDefaultChannelGroup 기준</span></span><div class="filter-group"><button class="filter-btn active" data-filter="channel" data-value="cubig">Cubig</button><button class="filter-btn" data-filter="channel" data-value="blog">Blog</button><button class="filter-btn" data-filter="channel" data-value="llm">LLMCapsule</button><button class="filter-btn" data-filter="channel" data-value="syn">SynTitan</button></div></h4><div class="chart-container h300"><canvas id="channelDonut"></canvas></div><div class="referral-detail" id="referralDetail"></div></div>
+      <div class="chart-card"><h4><span class="tooltip-wrap">채널별 같은 기간 대비 변화<span class="tooltip-text">선택 기간 vs 동일 길이 직전 기간</span></span></h4><div class="chart-container h300"><canvas id="channelCompare"></canvas></div></div>
     </div>
-    <div class="section-header">AD PERFORMANCE</div>
-    <div class="chart-card" style="margin-bottom:16px"><h4>광고 플랫폼별 성과 요약</h4><div style="overflow-x:auto"><table class="ad-table"><thead><tr><th>플랫폼</th><th>상태</th><th class="num">광고비</th><th class="num">노출</th><th class="num">클릭</th><th class="num">리드</th><th class="num">평균 CPC</th><th class="num">CTR</th></tr></thead><tbody id="adSummaryBody"></tbody></table></div></div>
+    <div class="section-header"><span class="tooltip-wrap">AD PERFORMANCE<span class="tooltip-text">META + Naver + Google Ads 합산</span></span></div>
+    <div class="chart-card" style="margin-bottom:16px"><h4><span class="tooltip-wrap">광고 플랫폼별 성과 요약<span class="tooltip-text">날짜 필터 적용, 캠페인별 일별 집계</span></span></h4><div style="overflow-x:auto"><table class="ad-table"><thead><tr><th>플랫폼</th><th>상태</th><th class="num">광고비</th><th class="num">노출</th><th class="num">클릭</th><th class="num">전환</th><th class="num">평균 CPC</th><th class="num">CTR</th></tr></thead><tbody id="adSummaryBody"></tbody></table></div></div>
     <div class="chart-row">
-      <div class="chart-card"><h4>광고 일별 지출 추이</h4><div class="chart-container h200"><canvas id="adDailySpend"></canvas></div></div>
-      <div class="chart-card"><h4>캠페인별 비용 분포</h4><div class="chart-container h200"><canvas id="campaignDonut"></canvas></div></div>
+      <div class="chart-card"><h4><span class="tooltip-wrap">광고 일별 지출 추이<span class="tooltip-text">META + Naver + Google 일별 지출</span></span></h4><div class="chart-container h200"><canvas id="adDailySpend"></canvas></div></div>
+      <div class="chart-card"><h4><span class="tooltip-wrap">캠페인별 비용 분포<span class="tooltip-text">활성 캠페인 지출 비율</span></span></h4><div class="chart-container h200"><canvas id="campaignDonut"></canvas></div></div>
     </div>
-    <div class="section-header">TOP CONTENT</div>
-    <div class="chart-card"><h4>블로그 성과 TOP 10 <span class="sub">cubig.ai/blogs &mdash; GA4 + GSC 결합</span></h4><div style="overflow-x:auto"><table class="data-table" id="blogTable"><thead><tr><th style="width:40%">제목</th><th class="num">GA4 세션</th><th class="num">사용자</th><th class="num">체류시간</th><th class="num">GSC 클릭</th><th class="num">GSC 노출</th><th class="num">CTR</th></tr></thead><tbody id="blogTableBody"></tbody></table></div></div>
+    <div class="section-header"><span class="tooltip-wrap">TOP CONTENT<span class="tooltip-text">cubig.ai/blogs GA4 세션 + GSC 검색 데이터</span></span></div>
+    <div class="chart-card"><h4>블로그 성과 TOP 10 <span class="sub">cubig.ai/blogs &mdash; GA4 + GSC 결합</span></h4><div style="overflow-x:auto"><table class="data-table" id="blogTable"><thead><tr><th style="width:35%">제목</th><th>게시일</th><th class="num">GA4 세션</th><th class="num">사용자</th><th class="num">체류시간</th><th class="num">GSC 클릭</th><th class="num">GSC 노출</th><th class="num">CTR</th></tr></thead><tbody id="blogTableBody"></tbody></table></div></div>
     <div class="chart-row" style="margin-top:20px">
       <div class="chart-card"><h4>국가별 사용자 분포<div class="filter-group"><button class="filter-btn active" data-filter="country" data-value="cubig">Cubig</button><button class="filter-btn" data-filter="country" data-value="llm">LLMCapsule</button><button class="filter-btn" data-filter="country" data-value="syn">SynTitan</button><button class="filter-btn" data-filter="country" data-value="blog">Blog</button></div></h4><div class="chart-container h350"><canvas id="countryDonut"></canvas></div></div>
       <div class="chart-card"><h4>유입검색어 TOP 10<div class="filter-group"><button class="filter-btn active" data-filter="query" data-value="cubig">Cubig</button><button class="filter-btn" data-filter="query" data-value="llm">LLMCapsule</button><button class="filter-btn" data-filter="query" data-value="syn">SynTitan</button><button class="filter-btn" data-filter="query" data-value="blog">Blog</button></div></h4><div style="overflow-x:auto"><table class="data-table" id="queryTable"><thead><tr><th>키워드</th><th class="num">클릭</th><th class="num">노출</th><th class="num">CTR</th><th class="num">순위</th></tr></thead><tbody id="queryTableBody"></tbody></table></div></div>
@@ -335,13 +336,13 @@ function renderOverview(){
   var blogAgg={};
   (cubig.dailyBlogPages||[]).filter(function(r){return dateInRange(r.dims[0]);}).forEach(function(r){
     var path=r.dims[1],title=r.dims[2];
-    if(!path.startsWith('/blogs/')||path.match(/\/page\/|\/tag\//))return;
+    if(!path.startsWith('/blogs/')||path.match(/\/page\/|\/tag\/|\/category\//))return;
     if(!title||title==='(not set)')return;
     if(!blogAgg[path])blogAgg[path]={path:path,title:title,ses:0,users:0,dur:0,cnt:0};
     blogAgg[path].ses+=r.mets[0];blogAgg[path].users+=r.mets[1];blogAgg[path].dur+=r.mets[2]*r.mets[0];blogAgg[path].cnt+=r.mets[0];
   });
-  var blogRows=Object.values(blogAgg).sort(function(a,b){return b.ses-a.ses;}).slice(0,10).map(function(p){var g=gscMap[p.path]||{};return{path:p.path,title:p.title.replace(' - CUBIG Blogs','').replace(' - CUBIG','').replace(' - Azoo Blogs',''),ses:p.ses,users:p.users,dur:p.cnt>0?p.dur/p.cnt:0,gClk:g.clicks||0,gImp:g.impressions||0,ctr:g.ctr||0};});
-  document.getElementById('blogTableBody').innerHTML=blogRows.map(function(r){return'<tr><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+r.title+'"><a href="https://cubig.ai'+r.path+'" target="_blank" style="color:var(--accent);text-decoration:none">'+r.title+'</a></td><td class="num">'+r.ses+'</td><td class="num">'+r.users+'</td><td class="num">'+fmtTime(r.dur)+'</td><td class="num">'+r.gClk+'</td><td class="num">'+fmt(r.gImp)+'</td><td class="num">'+(r.ctr*100).toFixed(2)+'%</td></tr>';}).join('');
+  var blogRows=Object.values(blogAgg).sort(function(a,b){return b.ses-a.ses;}).slice(0,10).map(function(p){var g=gscMap[p.path]||{};var pubDate='-';var firstDate=(cubig.dailyBlogPages||[]).filter(function(r){return r.dims[1]===p.path;}).map(function(r){return r.dims[0];}).sort()[0];if(firstDate)pubDate=parseDate(firstDate);return{path:p.path,title:p.title.replace(' - CUBIG Blogs','').replace(' - CUBIG','').replace(' - Azoo Blogs',''),pubDate:pubDate,ses:p.ses,users:p.users,dur:p.cnt>0?p.dur/p.cnt:0,gClk:g.clicks||0,gImp:g.impressions||0,ctr:g.ctr||0};});
+  document.getElementById('blogTableBody').innerHTML=blogRows.map(function(r){return'<tr><td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+r.title+'"><a href="https://cubig.ai'+r.path+'" target="_blank" style="color:var(--accent);text-decoration:none">'+r.title+'</a></td><td style="white-space:nowrap;color:var(--text-sub);font-size:12px">'+r.pubDate+'</td><td class="num">'+r.ses+'</td><td class="num">'+r.users+'</td><td class="num">'+fmtTime(r.dur)+'</td><td class="num">'+r.gClk+'</td><td class="num">'+fmt(r.gImp)+'</td><td class="num">'+(r.ctr*100).toFixed(2)+'%</td></tr>';}).join('');
 
   // ---- Country & Query (initial) ----
   renderCountryDonut('cubig');
@@ -356,7 +357,8 @@ function renderOverview(){
 
 function renderChannelDonut(src){
   var dailyCh;
-  if(src==='llm')dailyCh=DATA.ga4.llm.dailyChannels||[];
+  if(src==='blog')dailyCh=DATA.ga4.cubig.dailyBlogChannels||DATA.ga4.cubig.dailyChannels||[];
+  else if(src==='llm')dailyCh=DATA.ga4.llm.dailyChannels||[];
   else if(src==='syn')dailyCh=DATA.ga4.syn.dailyChannels||[];
   else dailyCh=DATA.ga4.cubig.dailyChannels||[];
   var chThis={};
@@ -365,14 +367,15 @@ function renderChannelDonut(src){
   Object.entries(chThis).sort(function(a,b){return b[1]-a[1];}).forEach(function(e){chN.push(e[0]);chV.push(e[1]);chBg.push(CH_COLORS[e[0]]||COLORS.gray);});
   destroyChart('channelDonut');
   chartInstances['channelDonut']=new Chart(document.getElementById('channelDonut'),{type:'doughnut',data:{labels:chN,datasets:[{data:chV,backgroundColor:chBg,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'50%',plugins:{legend:{position:'right',labels:{padding:14,font:{size:12}}},tooltip:{callbacks:{label:function(ctx){var t=ctx.dataset.data.reduce(function(a,b){return a+b;},0);return ctx.label+': '+ctx.raw+' ('+(ctx.raw/t*100).toFixed(1)+'%)';} }}}}});
-  // Referral 세부 (cubig만 — 날짜 필터 적용)
+  // Referral 세부 (모든 필터 — 날짜 필터 적용)
   var refEl=document.getElementById('referralDetail');
-  if(src==='cubig'){
-    var dailyRef=DATA.ga4.cubig.dailyReferral||[];
-    var refAgg={};dailyRef.filter(function(r){return _dateInRange(r.dims[0]);}).forEach(function(r){refAgg[r.dims[1]]=(refAgg[r.dims[1]]||0)+r.mets[0];});
-    var refArr=Object.entries(refAgg).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
-    if(refArr.length>0){refEl.innerHTML='<strong>Referral \uC138\uBD80:</strong> '+refArr.map(function(r){return'<span><span class="ref-name">'+r[0]+'</span> '+r[1]+'\uD68C</span>';}).join('');}else{refEl.innerHTML='';}
-  }else{refEl.innerHTML='';}
+  var dailyRef;
+  if(src==='llm')dailyRef=DATA.ga4.llm.dailyReferral||[];
+  else if(src==='syn')dailyRef=DATA.ga4.syn.dailyReferral||[];
+  else dailyRef=DATA.ga4.cubig.dailyReferral||[];
+  var refAgg={};dailyRef.filter(function(r){return _dateInRange(r.dims[0]);}).forEach(function(r){refAgg[r.dims[1]]=(refAgg[r.dims[1]]||0)+r.mets[0];});
+  var refArr=Object.entries(refAgg).sort(function(a,b){return b[1]-a[1];}).slice(0,10);
+  if(refArr.length>0){refEl.innerHTML='<strong>Referral \uC138\uBD80:</strong> '+refArr.map(function(r){return'<span><span class="ref-name">'+r[0]+'</span> '+r[1]+'\uD68C</span>';}).join('');}else{refEl.innerHTML='';}
 }
 
 function renderCountryDonut(src){
